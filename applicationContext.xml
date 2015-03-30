@@ -91,12 +91,24 @@
       </map>
     </property>
     <!-- properties -->
-    <property name="">
+    <property name="名称">
       <props>
          <prop key="">value</prop>
       </props>
     </property>
 
+    <!-- ########## 后处理器 ########## -->
+    <!-- 创建一个类，并实现接口 -->
+    <!--
+    public class name implements BeanPostProcessor{
+    @Override
+    public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {return null;}
+    @Override
+    public Object postProcessAfterInitialization(Object o, String s) throws BeansException {return null;}
+    }
+  -->
+  <!-- 加入配置，不需要id -->
+  <bean class="name" />
 
 
     <bean id="testService" class="com.my.hibernate.service.Test">
