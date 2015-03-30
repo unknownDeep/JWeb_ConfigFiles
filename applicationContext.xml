@@ -9,6 +9,7 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
        ">
 
+    <!-- 创建数据源对象 -->
     <bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/web"/>
@@ -16,19 +17,47 @@
         <property name="password" value="611722"/>
     </bean>
 
+    <!-- 创建sessionFactory对象 -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!-- 创建事务管理对象 -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="userDAO" class="com.my.hibernate.dao.UserDAO">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <!-- 创建bean对象 -->
+    <bean id="...." class="com.my...."/>
+    
+    <!-- 通过简单工厂创建bean对象 -->
+    <bean id="...." class="com.my...." factory-method="本类内的一个静态方法，返回本类对象"/>
+
+    <!-- 通过工厂类创建bean对象 -->
+    <!-- 工厂bean -->
+    <bean id="factoryClass" class="com.my...."/>
+    <!-- 创建bean -->
+    <bean id="userDAO" class="com.my.hibernate.dao.UserDAO" factory-bean="factoryClass" factory-method="本类内的一个静态方法，返回本类对象"/>
+
+    <!-- bean对象的作用域 -->
+    <!-- 单例，默认 -->
+    <bean id="...." class="com.my...." scope="singleton"/>
+    <!-- 单例 -->
+    <bean id="...." class="com.my...." scope="prototype"/>
+
+    <!-- ########## 依赖注入 ########## -->
+    <!-- 通过有参构造 -->
+    <bean id="userDAO" class="com.my.hibernate.dao.UserDAO" >
+        <constructor-arg index="位置" type="类型" value/ref=""/>
     </bean>
+    <!-- 通过set方法 -->
+    <bean id="userDAO" class="com.my.hibernate.dao.UserDAO" >
+        <property name="名称" value/ref=""/>
+    </bean>
+    <!-- 接口注入 -->
+
 
     <bean id="testService" class="com.my.hibernate.service.Test">
         <property name="userDAO" ref="userDAO"/>
