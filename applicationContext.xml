@@ -35,13 +35,13 @@
     <!-- 通过简单工厂创建bean对象 -->
     <bean id="...." class="com.my...." factory-method="本类内的一个静态方法，返回本类对象"/>
 
-    <!-- 通过工厂类创建bean对象 -->
+    <!-- ########## 通过工厂类创建bean对象 ########## -->
     <!-- 工厂bean -->
     <bean id="factoryClass" class="com.my...."/>
     <!-- 创建bean -->
     <bean id="userDAO" class="com.my.hibernate.dao.UserDAO" factory-bean="factoryClass" factory-method="本类内的一个静态方法，返回本类对象"/>
 
-    <!-- bean对象的作用域 -->
+    <!-- ########## bean对象的作用域 ########## -->
     <!-- 单例，默认 -->
     <bean id="...." class="com.my...." scope="singleton"/>
     <!-- 单例 -->
@@ -57,6 +57,46 @@
         <property name="名称" value/ref=""/>
     </bean>
     <!-- 接口注入 -->
+
+    <!-- ########## spEL表达式 ########## -->
+    <bean id="userDAO" class="com.my.hibernate.dao.UserDAO" >
+        <!-- 直接引用bean -->
+        <property name="名称" value="#{obj}"/>
+        <!-- 引用bean属性 -->
+        <property name="名称" value="#{obj.kk....}"/>
+        <!-- 引用bean方法 -->
+        <property name="名称" value="#{obj.kk()}"/>
+    </bean>
+
+    <!-- ########## 集合注入 ########## -->
+    <!-- list -->
+    <property name="名称">
+        <list>
+          <value>简单类型</value>
+          <ref>bean</ref>
+        </list>
+    <property/>
+    <!-- set -->
+    <property name="名称">
+        <set>
+          <value>简单类型</value>
+          <ref>bean</ref>
+        </set>
+    <property/>
+    <!-- map -->
+    <property name="名称">
+        <map>
+          <entry key="" value=""/>
+          <entry key-ref="" value-ref=""/>
+      </map>
+    </property>
+    <!-- properties -->
+    <property name="">
+      <props>
+         <prop key="">value</prop>
+      </props>
+    </property>
+
 
 
     <bean id="testService" class="com.my.hibernate.service.Test">
