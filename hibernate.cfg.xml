@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/web</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <property name="hbm2ddl.auto">update</property>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <mapping resource="hbm/UserBean.hbm.xml"/>
+        <mapping resource="hbm/AddrUserBean.hbm.xml"/>
+        <mapping resource="hbm/AccreditConnBean.hbm.xml"/>
+        <mapping resource="hbm/MoneyStreamUserBean.hbm.xml"/>
+        <mapping resource="hbm/PackageBean.hbm.xml"/>
+
+        <mapping resource="hbm/User_AddrUser.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>
