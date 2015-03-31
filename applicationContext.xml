@@ -119,7 +119,7 @@
   <!-- =========================================================================================================== -->
   <!-- 连接点(jointPoint):被拦截到的点(spring:对象被拦截到的方法) -->
   <!-- 切入点(pointCut):被拦截到的方法 -->
-  <!-- 增强(Advice):增强代码 -->
+  <!-- 增强,通知(Advice):增强代码 -->
   <!-- 引介(Introdution):对目标对象增强(动态的为类添加属性、方法) -->
   <!-- 目标对象(Targer):被拦截目标对象 -->
   <!-- 织入(Weaving):把增强应用到目标对象生成新的代理对象的过程 -->
@@ -137,19 +137,33 @@
   <!-- 4.设置回调对象:en.setCallback(new CallBackClass()) -->
   <!-- 5.获得代理对象:en.create() -->
 
+  <!-- =========================================================================================================== -->
+  <!-- ============================================== 传统springAOP ============================================== -->
+  <!-- =========================================================================================================== -->
+  <!--  前置通知:MethodBeforeAdvice -->
+  <!--  后置通知:AfterRunningAdvice -->
+  <!--  环绕通知:MethodInterceptor -->
+  <!--  异常通知:RhrowsAdvice -->
+  <!--  增加方法,属性:IntroductionInterceptor -->
 
-    <bean id="testService" class="com.my.hibernate.service.Test">
-        <property name="userDAO" ref="userDAO"/>
-    </bean>
+  <!-- execution(<访问修饰符>？<返回类型><方法名>(<参数>)<异常>) -->
+  <!-- execution(* cn.it.dao..*.*(..))拦截dao包及其所有子包的所有类的所有方法 -->
+  <!-- execution(* cn.it.dao.*.*(..))拦截dao包自己下(不包括子包)的所有类的所有方法 -->
+  <aop:config>
+    <aop:pointcat id="pointcat" expression="execution(* com.my.hibernate.service.Test.*(..))"/>
+    <!-- aop:advisor(传统切面配置，只能配置一个pointcut) -->
+    <aop:advisor advice-ref="transactionAdvice" pointcut="pointcut"/>
+  </aop:config>
+  <!-- 或 -->
+  <aop:config>
+    <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.my.hibernate.service.Test.*(..))"/>
+  </aop:config>
+
 
     <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" timeout="-1"/>
         </tx:attributes>
     </tx:advice>
-
-    <aop:config>
-        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.my.hibernate.service.Test.*(..))"/>
-    </aop:config>
 
 </beans>
