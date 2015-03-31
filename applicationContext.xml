@@ -128,6 +128,17 @@
   <!-- 切面(Aspect):是切入点和引介的结合 -->
 
 
+  <!-- ============================================================================================================= -->
+  <!-- ================================================= CGlib使用 ================================================= -->
+  <!-- ============================================================================================================= -->
+  <!-- 0.继承接口:CallBackClass implements MethodInterceptor -->
+  <!-- 1.实现方法:intercept -->
+  <!-- 2.创建对象:Enhancer en = new Enhancer()-->
+  <!-- 3.设置目标对象类:en.setSuperClass(target.class) -->
+  <!-- 4.设置回调对象:en.setCallback(new CallBackClass()) -->
+  <!-- 5.获得代理对象:en.create() -->
+
+
     <bean id="testService" class="com.my.hibernate.service.Test">
         <property name="userDAO" ref="userDAO"/>
     </bean>
