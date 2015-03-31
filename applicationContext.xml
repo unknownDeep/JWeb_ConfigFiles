@@ -149,14 +149,65 @@
   <!-- execution(<访问修饰符>？<返回类型><方法名>(<参数>)<异常>) -->
   <!-- execution(* cn.it.dao..*.*(..))拦截dao包及其所有子包的所有类的所有方法 -->
   <!-- execution(* cn.it.dao.*.*(..))拦截dao包自己下(不包括子包)的所有类的所有方法 -->
+  <!-- aop:advisor(传统切面配置，只能配置一个pointcut和一个advice) -->
   <aop:config>
     <aop:pointcat id="pointcat" expression="execution(* com.my.hibernate.service.Test.*(..))"/>
-    <!-- aop:advisor(传统切面配置，只能配置一个pointcut) -->
-    <aop:advisor advice-ref="transactionAdvice" pointcut="pointcut"/>
+    <aop:advisor advice-ref="transactionAdvice" pointcut-ref="pointcut"/>
   </aop:config>
   <!-- 或 -->
   <aop:config>
     <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.my.hibernate.service.Test.*(..))"/>
+  </aop:config>
+
+
+  <!-- =========================================================================================================== -->
+  <!-- =============================================== AspectJAOP =============================================== -->
+  <!-- =========================================================================================================== -->
+  <!-- 前置通知 -->
+  <!-- 配置切面bean -->
+  <bean id="as" class=".....">
+  <!-- 配置切面 -->
+  <aop:config>
+    <aop:aspect ref="as">
+        <aop:pointcat id="pointcat" expression="execution(* com.my.hibernate.service.Test.*(..))"/>
+        <!-- ......可以同时配置多个切点 -->
+        <aop:before method="...." pointcut-ref="pointcut"/>
+        <!-- ......可以同时配置多个切面,方法可以有一个特定参数 -->
+    <aop:aspect/>
+  </aop:config>
+
+  <!-- 后置通知 -->
+  <!-- 配置切面bean -->
+  <bean id="as" class=".....">
+  <!-- 配置切面 -->
+  <aop:config>
+    <aop:aspect ref="as">
+        <aop:pointcat id="pointcat" expression="execution(* com.my.hibernate.service.Test.*(..))"/>
+        <!-- ......可以同时配置多个切点 -->
+        <aop:after-running method="...." rerurn="res" pointcut-ref="pointcut"/>
+        <!-- ......可以同时配置多个切面,方法可以有两个特定参数JoinPoint,Object:object是被拦截方法的返回值，return=“res”中res代表Object的名称 -->
+    <aop:aspect/>
+  </aop:config>
+
+  <!-- 环绕通知 -->
+  <!-- 切面方法示例 
+  public Object around(ProceedingJoinPoint pointcut)throws Throwable{
+        //前置通知代码
+        Object obj = pointcut.proceed();//执行
+        //后置通知代码
+        return obj;//返回
+  }
+  -->
+  <!-- 配置切面bean -->
+  <bean id="as" class=".....">
+  <!-- 配置切面 -->
+  <aop:config>
+    <aop:aspect ref="as">
+        <aop:pointcat id="pointcat" expression="execution(* com.my.hibernate.service.Test.*(..))"/>
+        <!-- ......可以同时配置多个切点 -->
+        <aop:after-running method="...." pointcut-ref="pointcut"/>
+        <!-- ......可以同时配置多个切面,方法可以有一个必须参数ProceedingJoinPoint -->
+    <aop:aspect/>
   </aop:config>
 
 
@@ -165,5 +216,10 @@
             <tx:method name="*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" timeout="-1"/>
         </tx:attributes>
     </tx:advice>
+
+
+
+  
+
 
 </beans>
